@@ -1,7 +1,6 @@
-// console.log("✅ Node.js environment is working!");
 const express = require('express');
 const cors = require('cors');
-const pool = require('./db').default;
+const pool = require('./db');
 require('dotenv').config();
 
 const app = express();
@@ -10,88 +9,91 @@ app.use(express.json());
 
 const PORT = process.env.PORT || 3030;
 
-app.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}`);
-
+app.get("/", (req, res) => {
+    res.send("✅ HRMS API is running");
 });
-//  get data from employee table
+
+app.get('/', async (req, res) => {
+    try {
+        const result = await pool.query('SELECT * FROM employees');
+        res.json(result.rows);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
+
 app.get('/employees', async (req, res) => {
     try {
-        const result = await pool.query('Select * from employees');
+        const result = await pool.query('SELECT * FROM employees');
         res.json(result.rows);
-    }
-    catch (error) {
-        res.status(500).json({ err: error.message })
-    }
-});
-//  get data from department table
-app.get('/departments', async (req, res) => {
-    try {
-        const result = await pool.query('Select * from departments');
-        res.json(result.rows);
-    }
-    catch (error) {
-        res.status(500).json({ err: error.message })
+    } catch (error) {
+        res.status(500).json({ error: error.message });
     }
 });
 
-//  get data from countries table
+app.get('/departments', async (req, res) => {
+    try {
+        const result = await pool.query('SELECT * FROM departments');
+        res.json(result.rows);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
+
 app.get('/countries', async (req, res) => {
     try {
-        const result = await pool.query('Select * from countries');
+        const result = await pool.query('SELECT * FROM countries');
         res.json(result.rows);
-    }
-    catch (error) {
-        res.status(500).json({ err: error.message })
+    } catch (error) {
+        res.status(500).json({ error: error.message });
     }
 });
-//  get data from locations table
+
 app.get('/locations', async (req, res) => {
     try {
-        const result = await pool.query('Select * from locations');
+        const result = await pool.query('SELECT * FROM locations');
         res.json(result.rows);
-    }
-    catch (error) {
-        res.status(500).json({ err: error.message })
+    } catch (error) {
+        res.status(500).json({ error: error.message });
     }
 });
-//  get data from dependants table
-app.get('/dependants', async (req, res) => {
+
+app.get('/dependents', async (req, res) => {
     try {
-        const result = await pool.query('Select * from dependents');
+        const result = await pool.query('SELECT * FROM dependents');
         res.json(result.rows);
-    }
-    catch (error) {
-        res.status(500).json({ err: error.message })
+    } catch (error) {
+        res.status(500).json({ error: error.message });
     }
 });
-//  get data from regions table
+
 app.get('/regions', async (req, res) => {
     try {
-        const result = await pool.query('Select * from regions');
+        const result = await pool.query('SELECT * FROM regions');
         res.json(result.rows);
-    }
-    catch (error) {
-        res.status(500).json({ err: error.message })
+    } catch (error) {
+        res.status(500).json({ error: error.message });
     }
 });
-//  get data from jobs table  
+
 app.get('/jobs', async (req, res) => {
     try {
-        const result = await pool.query('Select * from jobs');
+        const result = await pool.query('SELECT * FROM jobs');
         res.json(result.rows);
-    }
-    catch (error) {
-        res.status(500).json({ err: error.message })
+    } catch (error) {
+        res.status(500).json({ error: error.message });
     }
 });
-//  get data from job_history table
+
 app.get('/job_history', async (req, res) => {
-    try { 
-        const result = await pool.query('Select * from job_history');
+    try {
+        const result = await pool.query('SELECT * FROM job_history');
         res.json(result.rows);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
     }
-    catch (error) {
-        res.status(500).json({ err: error.message })
-    }
+});
+
+app.listen(PORT, () => {
+    console.log(`✅ Server is running on port ${PORT}`);
 });
