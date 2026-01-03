@@ -12,7 +12,9 @@ const PORT = process.env.PORT || 3030;
 app.get("/", (req, res) => {
     res.send("✅ HRMS API is running");
 });
-
+app.get("/", (req, res) => {
+  res.send("Employee API is running successfully");
+});
 app.get('/', async (req, res) => {
     try {
         const result = await pool.query('SELECT * FROM employees');
